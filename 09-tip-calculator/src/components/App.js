@@ -1,3 +1,9 @@
+import TipCalculator from "./TipCalculator";
+
 export default function App() {
-  return <div className="App">Hello</div>;
+  return (
+    <div>
+      <TipCalculator />
+    </div>
+  );
 }
