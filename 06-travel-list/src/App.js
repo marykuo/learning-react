@@ -19,6 +19,14 @@ export default function App() {
     );
   }
 
+  function handleClearItems() {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete all items?"
+    );
+
+    if (confirmed) setItems([]);
+  }
+
   return (
     <div className="app">
       <Logo />
@@ -27,6 +35,7 @@ export default function App() {
         items={items}
         onDeleteItem={handleDeleteItem}
         onToggleItem={handleToggleItem}
+        onClearItem={handleClearItems}
       />
       <Stats items={items} />
     </div>
@@ -79,7 +88,7 @@ function Form({ onAddItem }) {
   );
 }
 
-function PackingList({ items, onDeleteItem, onToggleItem }) {
+function PackingList({ items, onDeleteItem, onToggleItem, onClearItem }) {
   const [sortBy, setSortBy] = useState("input");
 
   // need to use slice() to take a copy of the array, because sort() is a mutating method
@@ -113,6 +122,7 @@ function PackingList({ items, onDeleteItem, onToggleItem }) {
           <option value="description">Sort by description</option>
           <option value="packed">Sort by packed status</option>
         </select>
+        <button onClick={() => onClearItem()}>Clear list</button>
       </div>
     </div>
   );
