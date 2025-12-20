@@ -1,14 +1,15 @@
 export default function AccordionItem({
   number,
   title,
-  text,
+  children: text,
   currentOpen,
   setCurrentOpen,
 }) {
   const isOpen = number === currentOpen;
 
   function handleToggle(number) {
-    setCurrentOpen(isOpen ? null : number);
+    if (number === currentOpen) setCurrentOpen(null);
+    else setCurrentOpen(number);
   }
 
   return (
