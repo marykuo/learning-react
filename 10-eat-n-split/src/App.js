@@ -2,17 +2,23 @@ import { useState } from "react";
 import initialFriends from "./Data.js";
 
 export default function App() {
+  const [friends, setFriends] = useState(initialFriends);
   const [showAddFriend, setShowAddFriend] = useState(false);
 
   function handleShowAddFriend() {
     setShowAddFriend((show) => !show);
   }
 
+  function handleAddFriend(newFriend) {
+    setFriends([...friends, newFriend]);
+    setShowAddFriend(false);
+  }
+
   return (
     <div className="app">
       <div className="sidebar">
-        <FriendsList friends={initialFriends} />
-        {showAddFriend && <FormAddFriend />}
+        <FriendsList friends={friends} />
+        {showAddFriend && <FormAddFriend onAddFriend={handleAddFriend} />}
         <Button onClick={handleShowAddFriend}>
           {showAddFriend ? "Close" : "Add"}
         </Button>
@@ -54,13 +60,40 @@ function Friend({ friend }) {
   );
 }
 
-function FormAddFriend() {
+function FormAddFriend({ onAddFriend }) {
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("https://i.pravatar.cc/48");
+
+  function onSubmit(e) {
+    // not to take the default action (submitting the form)
+    e.preventDefault();
+
+    const newFriend = {
+      id: Date.now(),
+      name: name,
+      image: image,
+      balance: 0,
+    };
+
+    onAddFriend(newFriend);
+  }
+
   return (
-    <form className="form-add-friend">
+    <form className="form-add-friend" onSubmit={onSubmit}>
       <label>👭 Name</label>
-      <input type="text" />
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+
       <label>🌆 Image URL</label>
-      <input type="text" defaultValue="https://i.pravatar.cc/48" />
+      <input
+        type="text"
+        value={image}
+        onChange={(e) => setImage(e.target.value)}
+      />
+
       <Button>Add</Button>
     </form>
   );
